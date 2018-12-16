@@ -17,7 +17,14 @@ window.Vue = require('vue');
  * Eg. ./components/ExampleComponent.vue -> <example-component></example-component>
  */
 
-Vue.component('example-component', require('./components/ExampleComponent.vue'));
+import VueRouter from 'vue-router';
+import {routes} from './routes'
+
+Vue.component('header-component', require('./components/Header.vue'));
+Vue.component('header-menu-component', require('./components/HeaderMenu.vue'));
+Vue.component('content-component', require('./components/Content.vue'));
+
+Vue.use(VueRouter);
 
 // const files = require.context('./', true, /\.vue$/i)
 // files.keys().map(key => Vue.component(key.split('/').pop().split('.')[0], files(key)))
@@ -28,6 +35,12 @@ Vue.component('example-component', require('./components/ExampleComponent.vue'))
  * or customize the JavaScript scaffolding to fit your unique needs.
  */
 
+const router = new VueRouter({
+    mode: 'history',
+    routes
+ })
+
 const app = new Vue({
-    el: '#app'
+    el: '#app',
+    router
 });
