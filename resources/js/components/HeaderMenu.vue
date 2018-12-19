@@ -1,9 +1,9 @@
 <template>
     <div id="headerMenu" class="container">
         <ul class="nav justify-content-end">
-                <router-link to="/home" class="nav-item" activeClass="active" tag="li">
-                    <button type="button" class="btn btn-primary endDayButton" >Home</button>
-                </router-link>
+                <li class="nav-item">
+                    <a href="/home" class="btn btn-primary endDayButton" tabindex="-1" role="button" aria-disabled="true">Home</a>
+                </li>
                  <router-link to="/showpanel" class="nav-item" activeClass="active" tag="li">
                     <button type="button" class="btn btn-primary endDayButton" >My bookings</button>
                 </router-link>

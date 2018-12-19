@@ -10,12 +10,15 @@
 
 <div id="headerMenu" class="container">
         <ul class="nav justify-content-end">
-                <li class="nav-item">
-                <a href="{{ url('/showpanel/'.$user_id) }}" class="btn btn-primary" id="endDayButton" tabindex="-1" role="button" aria-disabled="true">Bookings</a>
-                </li>
-                <li class="nav-item">
-                    <a href="#" class="btn btn-primary" id="endDayButton" tabindex="-1" role="button" aria-disabled="true">Rooms</a>
-                </li>
+        <li class="nav-item">
+                    <a href="{{ url('/home') }}" class="btn btn-primary" id="endDayButton" tabindex="-1" role="button" aria-disabled="true">Home</a>
+                    </li>
+                    <li class="nav-item">
+                    <a href="{{ url('/showpanel/'.$user_id) }}" class="btn btn-primary" id="endDayButton" tabindex="-1" role="button" aria-disabled="true">Bookings</a>
+                    </li>
+                    <li class="nav-item">
+                        <a href="{{ url('/rooms') }}" class="btn btn-primary" id="endDayButton" tabindex="-1" role="button" aria-disabled="true">Rooms</a>
+                    </li>
         </ul>
 </div>
 

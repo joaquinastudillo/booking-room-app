@@ -29,7 +29,7 @@
         <div class="row form-group">
             <div class="col">
                 <label>Start Date</label>
-                <input v-model="event.start_date" type="date" class="form-control" name="start_date" required>
+                <input v-model="event.start_date" type="date" class="form-control" name="start_date">
             </div>
             <div class="col">
                 <label>Start Time</label>
@@ -77,7 +77,8 @@ const moment = MomentRange.extendMoment(Moment);
                     user_id: ''
                 },
                 edit: false,
-                errorOnloading: ''
+                errorOnloading: '',
+                today: ''
             }
         },
         mounted() {
@@ -87,6 +88,9 @@ const moment = MomentRange.extendMoment(Moment);
                 this.edit = true
             }else{
                 this.edit = false
+                this.today = this.getToday()
+                this.event.start_date = this.today
+                this.event.end_date = this.event.start_date
             }
         },
         computed:{
@@ -95,6 +99,20 @@ const moment = MomentRange.extendMoment(Moment);
             }
         }, 
         methods: {
+            getToday(){
+                var today = new Date();
+                var dd = today.getDate();
+                var mm = today.getMonth() + 1;
+                var yyyy = today.getFullYear();
+                if (dd < 10) {
+                dd = '0' + dd;
+                } 
+                if (mm < 10) {
+                mm = '0' + mm;
+                } 
+                var today = yyyy + '-' + mm + '-' + dd;
+                return today
+            },
             backToDash(){
                 this.$router.push("/showpanel")
             },
@@ -105,7 +123,6 @@ const moment = MomentRange.extendMoment(Moment);
                 axios.defaults.baseURL = 'http://localhost:8000/api';
                 if(this.edit == false){
                     axios.post('events', this.event)
-                    .then(response => response.data.data)
                     .then(response => {
                         response = response.data.data
                         this.$router.push('showpanel')

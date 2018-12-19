@@ -9,19 +9,20 @@
 
         <!-- Fonts -->
         <link href="https://fonts.googleapis.com/css?family=Nunito:200,600" rel="stylesheet" type="text/css">
+        <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.1.3/css/bootstrap.min.css" integrity="sha384-MCw98/SFnGE8fJT3GXwEOngsV7Zt27NXFoaoApmYm81iuXoPkFOJwJ8ERdknLPMO" crossorigin="anonymous">
 
         <!-- Styles -->
         <style>
         </style>
     </head>
     <body>
-        <div class="flex-center position-ref full-height">
+        <div class="centered-box">
             @if (Route::has('login'))
                 <div class="top-right links">
                     @auth
                         <a href="{{ url('/home') }}">Home</a>
                     @else
-                        <a href="{{ route('login') }}">Login</a>
+                        <a href="{{ route('login') }}"  class="btn btn-primary">Login</a>
 
                         @if (Route::has('register'))
                             <!--<a href="{{ route('register') }}">Register</a>-->
@@ -30,6 +31,24 @@
                 </div>
             @endif
         </div>
-        
+        <style>
+        .centered-box{
+            margin: 0;
+            display: flex;
+            width: 98vw;
+            height: 90vh;
+            flex-direction: row;
+            border: 1px solid;
+            justify-content: center;
+            align-items: center;margin: 0;
+            display: flex;
+            width: 98vw;
+            height: 90vh;
+            flex-direction: row;
+            border: 1px solid;
+            justify-content: center;
+            align-items: center;
+        }
+        </style>
     </body>
 </html>

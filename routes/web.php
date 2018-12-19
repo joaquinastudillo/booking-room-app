@@ -21,3 +21,9 @@ Auth::routes();
 
 Route::resource('home','EventController');
 Route::get('/showpanel/{userid}','EventController@display');
+Route::get('/rooms','EventController@displayRooms');
+//rooms
+Route::get('/rooms/tatooine','EventController@displayTatooine');
+Route::get('/rooms/goldenrod','EventController@displayGoldenrod');
+Route::get('/rooms/gotham','EventController@displayGotham');
+Route::get('/rooms/duckburg','EventController@displayDuckburg');

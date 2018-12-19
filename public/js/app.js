@@ -66986,6 +66986,10 @@ var routes = [{
 /***/ (function(module, exports, __webpack_require__) {
 
 var disposed = false
+function injectStyle (ssrContext) {
+  if (disposed) return
+  __webpack_require__(203)
+}
 var normalizeComponent = __webpack_require__(3)
 /* script */
 var __vue_script__ = __webpack_require__(171)
@@ -66994,7 +66998,7 @@ var __vue_template__ = __webpack_require__(173)
 /* template functional */
 var __vue_template_functional__ = false
 /* styles */
-var __vue_styles__ = null
+var __vue_styles__ = injectStyle
 /* scopeId */
 var __vue_scopeId__ = null
 /* moduleIdentifier (server only) */
@@ -67066,13 +67070,17 @@ Object.defineProperty(__webpack_exports__, "__esModule", { value: true });
 //
 //
 //
+//
+//
 
 var moment = __webpack_require__(0);
 /* harmony default export */ __webpack_exports__["default"] = ({
     name: 'HomeComponent',
     data: function data() {
         return {
-            moment: moment
+            moment: moment,
+            show: true,
+            label: 'Loading...'
         };
     },
     mounted: function mounted() {
@@ -67083,6 +67091,9 @@ var moment = __webpack_require__(0);
     computed: {
         events: function events() {
             return this.$store.getters.events;
+        },
+        userId: function userId() {
+            return this.$store.getters.userId;
         }
     },
     methods: {
@@ -67393,60 +67404,77 @@ var render = function() {
       _c(
         "tbody",
         _vm._l(_vm.events, function(event) {
-          return _c(
-            "tr",
-            {
-              key: event.id,
-              on: {
-                click: function($event) {
-                  _vm.editEvent(event.id)
-                }
-              }
-            },
-            [
-              event.room == 1
-                ? _c("th", { attrs: { scope: "row" } }, [_vm._v("Tatooine")])
-                : _vm._e(),
-              _vm._v(" "),
-              event.room == 2
-                ? _c("th", { attrs: { scope: "row" } }, [_vm._v("Goldenrod")])
-                : _vm._e(),
-              _vm._v(" "),
-              event.room == 3
-                ? _c("th", { attrs: { scope: "row" } }, [_vm._v("Gotham")])
-                : _vm._e(),
-              _vm._v(" "),
-              event.room == 4
-                ? _c("th", { attrs: { scope: "row" } }, [_vm._v("Duckburg")])
-                : _vm._e(),
-              _vm._v(" "),
-              _c("td", [
-                _vm._v(
-                  _vm._s(event.start_date) + " / " + _vm._s(event.start_time)
-                )
-              ]),
-              _vm._v(" "),
-              _c("td", [
-                _vm._v(_vm._s(event.end_date) + " / " + _vm._s(event.end_time))
-              ]),
-              _vm._v(" "),
-              _c("td", [
-                _vm._v(
-                  _vm._s(
-                    _vm.moment
-                      .duration(
-                        _vm
-                          .moment(event.start_date + " " + event.start_time)
-                          .diff(
-                            _vm.moment(event.end_date + " " + event.end_time)
+          return _vm.userId == event.user_id
+            ? _c(
+                "tr",
+                {
+                  key: event.id,
+                  staticClass: "itemDisplay",
+                  on: {
+                    click: function($event) {
+                      _vm.editEvent(event.id)
+                    }
+                  }
+                },
+                [
+                  event.room == 1
+                    ? _c("td", { attrs: { scope: "row" } }, [
+                        _vm._v("Tatooine")
+                      ])
+                    : _vm._e(),
+                  _vm._v(" "),
+                  event.room == 2
+                    ? _c("td", { attrs: { scope: "row" } }, [
+                        _vm._v("Goldenrod")
+                      ])
+                    : _vm._e(),
+                  _vm._v(" "),
+                  event.room == 3
+                    ? _c("td", { attrs: { scope: "row" } }, [_vm._v("Gotham")])
+                    : _vm._e(),
+                  _vm._v(" "),
+                  event.room == 4
+                    ? _c("td", { attrs: { scope: "row" } }, [
+                        _vm._v("Duckburg")
+                      ])
+                    : _vm._e(),
+                  _vm._v(" "),
+                  _c("td", [_vm._v(_vm._s(event.title))]),
+                  _vm._v(" "),
+                  _c("td", [
+                    _vm._v(
+                      _vm._s(event.start_date) +
+                        " / " +
+                        _vm._s(event.start_time)
+                    )
+                  ]),
+                  _vm._v(" "),
+                  _c("td", [
+                    _vm._v(
+                      _vm._s(event.end_date) + " / " + _vm._s(event.end_time)
+                    )
+                  ]),
+                  _vm._v(" "),
+                  _c("td", [
+                    _vm._v(
+                      _vm._s(
+                        _vm.moment
+                          .duration(
+                            _vm
+                              .moment(event.start_date + " " + event.start_time)
+                              .diff(
+                                _vm.moment(
+                                  event.end_date + " " + event.end_time
+                                )
+                              )
                           )
+                          .humanize()
                       )
-                      .humanize()
-                  )
-                )
-              ])
-            ]
-          )
+                    )
+                  ])
+                ]
+              )
+            : _vm._e()
         }),
         0
       )
@@ -67461,6 +67489,8 @@ var staticRenderFns = [
     return _c("thead", [
       _c("tr", [
         _c("th", { attrs: { scope: "col" } }, [_vm._v("Meeting Room Name")]),
+        _vm._v(" "),
+        _c("th", { attrs: { scope: "col" } }, [_vm._v("Title Meeting")]),
         _vm._v(" "),
         _c("th", { attrs: { scope: "col" } }, [
           _vm._v("Start Date / Start Time")
@@ -67567,7 +67597,8 @@ var moment = MomentRange.extendMoment(Moment);
                 user_id: ''
             },
             edit: false,
-            errorOnloading: ''
+            errorOnloading: '',
+            today: ''
         };
     },
     mounted: function mounted() {
@@ -67577,6 +67608,9 @@ var moment = MomentRange.extendMoment(Moment);
             this.edit = true;
         } else {
             this.edit = false;
+            this.today = this.getToday();
+            this.event.start_date = this.today;
+            this.event.end_date = this.event.start_date;
         }
     },
 
@@ -67586,6 +67620,20 @@ var moment = MomentRange.extendMoment(Moment);
         }
     },
     methods: {
+        getToday: function getToday() {
+            var today = new Date();
+            var dd = today.getDate();
+            var mm = today.getMonth() + 1;
+            var yyyy = today.getFullYear();
+            if (dd < 10) {
+                dd = '0' + dd;
+            }
+            if (mm < 10) {
+                mm = '0' + mm;
+            }
+            var today = yyyy + '-' + mm + '-' + dd;
+            return today;
+        },
         backToDash: function backToDash() {
             this.$router.push("/showpanel");
         },
@@ -67598,8 +67646,6 @@ var moment = MomentRange.extendMoment(Moment);
             axios.defaults.baseURL = 'http://localhost:8000/api';
             if (this.edit == false) {
                 axios.post('events', this.event).then(function (response) {
-                    return response.data.data;
-                }).then(function (response) {
                     response = response.data.data;
                     _this.$router.push('showpanel');
                 }).catch(function (error) {
@@ -67768,7 +67814,7 @@ var render = function() {
                 }
               ],
               staticClass: "form-control",
-              attrs: { type: "date", name: "start_date", required: "" },
+              attrs: { type: "date", name: "start_date" },
               domProps: { value: _vm.event.start_date },
               on: {
                 input: function($event) {
@@ -69232,23 +69278,7 @@ var render = function() {
       "ul",
       { staticClass: "nav justify-content-end" },
       [
-        _c(
-          "router-link",
-          {
-            staticClass: "nav-item",
-            attrs: { to: "/home", activeClass: "active", tag: "li" }
-          },
-          [
-            _c(
-              "button",
-              {
-                staticClass: "btn btn-primary endDayButton",
-                attrs: { type: "button" }
-              },
-              [_vm._v("Home")]
-            )
-          ]
-        ),
+        _vm._m(0),
         _vm._v(" "),
         _c(
           "router-link",
@@ -69290,7 +69320,28 @@ var render = function() {
     )
   ])
 }
-var staticRenderFns = []
+var staticRenderFns = [
+  function() {
+    var _vm = this
+    var _h = _vm.$createElement
+    var _c = _vm._self._c || _h
+    return _c("li", { staticClass: "nav-item" }, [
+      _c(
+        "a",
+        {
+          staticClass: "btn btn-primary endDayButton",
+          attrs: {
+            href: "/home",
+            tabindex: "-1",
+            role: "button",
+            "aria-disabled": "true"
+          }
+        },
+        [_vm._v("Home")]
+      )
+    ])
+  }
+]
 render._withStripped = true
 module.exports = { render: render, staticRenderFns: staticRenderFns }
 if (false) {
@@ -69469,6 +69520,55 @@ if (false) {
 /***/ (function(module, exports) {
 
 // removed by extract-text-webpack-plugin
+
+/***/ }),
+/* 194 */,
+/* 195 */,
+/* 196 */,
+/* 197 */,
+/* 198 */,
+/* 199 */,
+/* 200 */,
+/* 201 */,
+/* 202 */,
+/* 203 */
+/***/ (function(module, exports, __webpack_require__) {
+
+// style-loader: Adds some css to the DOM by adding a <style> tag
+
+// load the styles
+var content = __webpack_require__(204);
+if(typeof content === 'string') content = [[module.i, content, '']];
+if(content.locals) module.exports = content.locals;
+// add the styles to the DOM
+var update = __webpack_require__(141)("21b903fa", content, false, {});
+// Hot Module Replacement
+if(false) {
+ // When the styles change, update the <style> tags
+ if(!content.locals) {
+   module.hot.accept("!!../../../node_modules/css-loader/index.js!../../../node_modules/vue-loader/lib/style-compiler/index.js?{\"vue\":true,\"id\":\"data-v-f2b6376c\",\"scoped\":false,\"hasInlineConfig\":true}!../../../node_modules/vue-loader/lib/selector.js?type=styles&index=0!./Home.vue", function() {
+     var newContent = require("!!../../../node_modules/css-loader/index.js!../../../node_modules/vue-loader/lib/style-compiler/index.js?{\"vue\":true,\"id\":\"data-v-f2b6376c\",\"scoped\":false,\"hasInlineConfig\":true}!../../../node_modules/vue-loader/lib/selector.js?type=styles&index=0!./Home.vue");
+     if(typeof newContent === 'string') newContent = [[module.id, newContent, '']];
+     update(newContent);
+   });
+ }
+ // When the module is disposed, remove the <style> tags
+ module.hot.dispose(function() { update(); });
+}
+
+/***/ }),
+/* 204 */
+/***/ (function(module, exports, __webpack_require__) {
+
+exports = module.exports = __webpack_require__(140)(false);
+// imports
+
+
+// module
+exports.push([module.i, "\n.itemDisplay{\n    -webkit-transition: all 0.5s ease-out;\n    transition: all 0.5s ease-out;\n}\n.itemDisplay:hover{\n    -webkit-transform: scale(1.05);\n            transform: scale(1.05);\n}\n", ""]);
+
+// exports
+
 
 /***/ })
 /******/ ]);
