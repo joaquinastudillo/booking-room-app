@@ -45,7 +45,6 @@
             width: 98vw;
             height: 90vh;
             flex-direction: row;
-            border: 1px solid;
             justify-content: center;
             align-items: center;
         }
