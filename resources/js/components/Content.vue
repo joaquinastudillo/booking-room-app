@@ -3,14 +3,30 @@
          <transition name="slide" mode="out-in">
            <router-view></router-view>
          </transition>
+         <p></p>
 </div>
 </template>
 
 <script>
     export default {
         name: 'ContentComponent',
+        props: ['user-id'],
+        data(){
+          return {
+            events: []
+          }
+        },
         mounted() {
-            console.log('Component mounted.')
+            this.setupIdUser()
+            this.showRouterView()
+        },
+        methods: {
+          setupIdUser(){
+            this.$store.commit('setupIdUser', this.$props.userId)
+          },
+          showRouterView(){
+            this.$router.push('/showpanel')
+          }
         }
     }
 </script>

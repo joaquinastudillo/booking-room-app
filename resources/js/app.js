@@ -19,12 +19,16 @@ window.Vue = require('vue');
 
 import VueRouter from 'vue-router';
 import {routes} from './routes'
+import {store} from './store'
 
 Vue.component('header-component', require('./components/Header.vue'));
 Vue.component('header-menu-component', require('./components/HeaderMenu.vue'));
 Vue.component('content-component', require('./components/Content.vue'));
+Vue.component('create-component', require('./components/Create.vue'));
 
 Vue.use(VueRouter);
+
+
 
 // const files = require.context('./', true, /\.vue$/i)
 // files.keys().map(key => Vue.component(key.split('/').pop().split('.')[0], files(key)))
@@ -42,5 +46,6 @@ const router = new VueRouter({
 
 const app = new Vue({
     el: '#app',
-    router
+    router,
+    store
 });

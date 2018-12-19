@@ -1,13 +1,10 @@
 <template>
     <div>
         <nav class="navbar navbar-expand navbar-light bg-light">
-            <router-link to="/home" class="navbar-brand">Stock Trader</router-link>
+            <a href="/home" class="navbar-brand">Room Scheduler</a>
             <ul class="navbar-nav">
-                <router-link to="portfolio" class="nav-item" activeClass="active" tag="li">
-                    <a class="nav-link">Portfolio</a>
-                </router-link>
-                <router-link to="/stocks" class="nav-item" activeClass="active" tag="li">
-                    <a class="nav-link">Stocks</a>
+                <router-link to="/showpanel" class="nav-item" activeClass="active" tag="li">
+                    <a class="nav-link">Bookings</a>
                 </router-link>
             </ul>
         </nav>

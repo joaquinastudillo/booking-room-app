@@ -20,3 +20,4 @@ Auth::routes();
 //Route::get('/home', 'HomeController@index')->name('home');
 
 Route::resource('home','EventController');
+Route::get('/showpanel/{userid}','EventController@display');

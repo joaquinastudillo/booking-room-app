@@ -4,11 +4,12 @@ namespace App\Http\Controllers;
 
 use Illuminate\Http\Request;
 use App\Event;
+use App\Http\Requests;
 use MaddHatter\LaravelFullcalendar\Facades\Calendar;
 use App\Http\Resources\Event as EventResource;
 use Illuminate\Support\Facades\Auth;
 
-class EventController extends Controller
+class EventControllerApi extends Controller
 {
     /**
      * Display a listing of the resource.
@@ -16,32 +17,10 @@ class EventController extends Controller
      * @return \Illuminate\Http\Response
      */
 
-    public function __construct()
-    {
-        $this->middleware('auth');
-    }
-
     public function index()
     {
         $events = Event::all();
-        $event = [];
-        foreach($events as $row){
-            //$enddate = $row->end_date." 24:00:00";
-            $event[] = \Calendar::event(    
-                $row->title,
-                false,
-                new \DateTime($row->start_date),
-                new \DateTime($row->end_date),
-                $row->id,
-                [
-                    'room' => $row->room,
-                ]
-            );
-        }
-
-        $user_id = Auth::id();
-        $calendar = \Calendar::addEvents($event);
-        return view('home', compact('events', 'calendar', 'user_id'));
+        return EventResource::collection($events);
     }
 
     /**
@@ -54,11 +33,6 @@ class EventController extends Controller
         //
     }
 
-    public function display($user_id)
-    {
-        return view('administration', compact('user_id'));
-    }
-
     /**
      * Store a newly created resource in storage.
      *
@@ -67,7 +41,27 @@ class EventController extends Controller
      */
     public function store(Request $request)
     {
-        //
+        $event = $request->isMethod('put') ? Event::findOrFail($request->id) : new Event;
+        $event->title = $request->input('title');
+        $event->room = $request->input('room');
+        $event->start_date = $request->input('start_date')." ".$request->input('start_time');
+        $event->end_date = $request->input('end_date')." ".$request->input('end_time');
+        $event->user_id = $request->input('user_id');
+
+        $result_room = Event::where('start_date', '<=', $event->start_date)->where('end_date', '>=', $event->end_date)->where('room',$event->room)->first();
+
+        if(!$result_room){
+            $result_user = Event::where('start_date', '<=', $event->start_date)->where('end_date', '>=', $event->end_date)->where('room',$event->room)->first();
+            if(!$result_user){
+                if($event->save()){
+                    return new EventResource($event);
+                }
+            }else{
+                return response()->json(['error' => 'Aparently'], 500);
+            }
+        }else{
+            return response()->json(['error' => 'Apparently you will be busy at that time'], 500);
+        }
     }
 
     /**
