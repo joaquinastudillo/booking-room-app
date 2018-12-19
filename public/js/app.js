@@ -67717,7 +67717,7 @@ var moment = MomentRange.extendMoment(Moment);
         addEvent: function addEvent() {
             var _this = this;
 
-            axios.defaults.baseURL = 'https://booking-room-app.herokuapp.com/api';
+            axios.defaults.baseURL = 'http://booking-room-app.herokuapp.com/api';
             if (this.edit == false) {
                 axios.post('events', this.event).then(function (response) {
                     response = response.data.data;
@@ -67738,7 +67738,7 @@ var moment = MomentRange.extendMoment(Moment);
             var _this2 = this;
 
             var id = this.$route.query.idEvent;
-            axios.delete('https://booking-room-app.herokuapp.com/api/events/' + id).then(function (response) {
+            axios.delete('http://booking-room-app.herokuapp.com/api/events/' + id).then(function (response) {
                 response = response.data.data;
                 _this2.$router.push('showpanel');
             }).catch(function (error) {

@@ -98,7 +98,7 @@ const moment = MomentRange.extendMoment(Moment);
             events(){
                 return this.$store.getters.events
             }
-        }, 
+        },
         methods: {
             getToday(){
                 var today = new Date();
@@ -121,7 +121,7 @@ const moment = MomentRange.extendMoment(Moment);
                 this.addEvent()
             },
             addEvent(){
-                axios.defaults.baseURL = 'https://booking-room-app.herokuapp.com/api';
+                axios.defaults.baseURL = 'http://booking-room-app.herokuapp.com/api';
                 if(this.edit == false){
                     axios.post('events', this.event)
                     .then(response => {
@@ -144,7 +144,7 @@ const moment = MomentRange.extendMoment(Moment);
             },
             deleteEvent(){
                     let id = this.$route.query.idEvent
-                    axios.delete(`https://booking-room-app.herokuapp.com/api/events/${id}`)
+                    axios.delete(`http://booking-room-app.herokuapp.com/api/events/${id}`)
                     .then(response => {
                         response = response.data.data
                         this.$router.push('showpanel')
