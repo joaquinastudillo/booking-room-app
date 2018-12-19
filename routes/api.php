@@ -21,3 +21,4 @@ Route::middleware('auth:api')->get('/user', function (Request $request) {
 Route::get('events', 'EventControllerApi@index');
 Route::post('events', 'EventControllerApi@store');
 Route::put('events', 'EventControllerApi@store');
+Route::delete('events/{id}', 'EventControllerApi@destroy');

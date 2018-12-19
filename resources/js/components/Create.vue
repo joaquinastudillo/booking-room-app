@@ -53,6 +53,7 @@
 
         <button type="submit" class="btn btn-primary">Create</button>
         <button type="submit" class="btn btn-primary" @click="backToDash">Back</button>
+        <button type="submit" class="btn btn-danger" v-if="this.$route.query.idEvent" @click="deleteEvent">delete</button>
    
     </form>
     </div>
@@ -120,7 +121,7 @@ const moment = MomentRange.extendMoment(Moment);
                 this.addEvent()
             },
             addEvent(){
-                axios.defaults.baseURL = 'http://localhost:8000/api';
+                axios.defaults.baseURL = 'https://booking-room-app.herokuapp.com/api';
                 if(this.edit == false){
                     axios.post('events', this.event)
                     .then(response => {
@@ -140,6 +141,17 @@ const moment = MomentRange.extendMoment(Moment);
                         this.errorOnloading = error.response.data.error
                     })
                 }
+            },
+            deleteEvent(){
+                    let id = this.$route.query.idEvent
+                    axios.delete(`https://booking-room-app.herokuapp.com/api/events/${id}`)
+                    .then(response => {
+                        response = response.data.data
+                        this.$router.push('showpanel')
+                    })
+                    .catch(error => {
+                        this.errorOnloading = error.response.data.error
+                    })
             },
             getEvent(value){
                 this.event = this.$store.getters.event(value)

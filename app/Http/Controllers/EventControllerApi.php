@@ -106,6 +106,11 @@ class EventControllerApi extends Controller
      */
     public function destroy($id)
     {
-        //
+        $event = Event::findOrFail($id);
+        if($event->delete()){
+            return new EventResource($event);
+        }else{
+            return response()->json(['error' => 'Error while trying to delete the register'], 500);      
+        }
     }
 }
